@@ -12,7 +12,7 @@ https://github.com/bitpusher2k
 
 ## v3.3 last updated 2024-04-05
 
-## AutoHotKey v1.1 macro script collection which provide several useful functions as keyboard shortcuts.
+## AutoHotKey macro script collection which provides several useful functions as keyboard shortcuts.
 
 ### Scripts provided as-is. Use at your own risk. No guarantees or warranty provided.
 
@@ -20,6 +20,10 @@ https://github.com/bitpusher2k
 
 Modify keyboard shortcuts as desired - https://www.autohotkey.com/docs/v1/Hotkeys.htm.  
 Compile with AHK into exe and set to start with Windows to have functions available each session.  
+
+AHK v1.1 has been what I've been using for years. Scripts were pretty simple, so AHK v2 version is also now included.
+
+Precompiled EXEs of the scripts are also included - Though you should not trust strange macro executables you find on the internet.
 
 Included functions:  
 
