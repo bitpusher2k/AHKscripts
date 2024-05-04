@@ -9,7 +9,7 @@
 ; https://github.com/bitpusher2k
 ;
 ; KeyUtility.ahk - By Bitpusher/The Digital Fox
-; v3.3 last updated 2024-04-05
+; v3.5 last updated 2024-05-04
 ; AutoHotKey v1.1 macro script collection which provide several useful functions as keyboard shortcuts.
 ;
 ; Usage:
@@ -18,7 +18,7 @@
 ;
 ; Included functions:
 ;  1. Text expansion of several useful abbreviations, including "ttt" for time, "ddd" for date, and "dddd" for date-stamp (use "::abbreviation::TEXT TO EXPAND TO" format to add your own).
-;  2. CapsLk -> Triggers PowerShell clipboard image resize script (from UtilityScripts).
+;  2. CapsLk -> Triggers PowerShell clipboard image resize script (Shrink-ClippedImage.ps1 from Clipboard repository - can customize path to launch PowerShell script of choice).
 ;  3. Shift+CapsLk -> Go up a directory level in Windows Explorer.
 ;  4. Ctrl+Win+ Up/Down/Left/Right -> PageUp/PageDown/Home/End.
 ;  5. Ctrl+Win+a -> Launch "Everything" search program.
@@ -26,8 +26,8 @@
 ;  7. Ctrl+Win+z -> Move the active window to near the top-left corner of the main screen (especially handy for windows that are lost off the edge of the screen).
 ;  8. Ctrl+Win+x -> Move the active window to near the top-left corner of the main screen, set the width to 1300, and set the height to 800 (preferred Explorer window size).
 ;  9. Ctrl+Win+c -> Move the active window to near the top-left corner of the main screen and set width/height to be a bit smaller than the screen.
-; 10. Ctrl+Win+v -> Text–only paste from clipboard.
-; 11. Alt+Left Click and drag anywhere on a window to move it.
+; 10. Ctrl+Win+v -> Text–only paste from clipboard (better paste as plane text now included in PowerToys - Ctrl+Win+Alt+v).
+; 11. Ctrl+Shift+v -> Triggers PowerShell clipboard image paste to file & create Markdown link script (Save-ClipboardImageMD.ps1 from Clipboard repository - can customize path to launch PowerShell script of choice).
 ;
 ; #macro #script #autohotkey #ahk #utility #shortcut
 
@@ -62,12 +62,15 @@ return
 
 
 ; CapsLock triggers PowerShell script that shrinks image in clipboard.
-Capslock::Run PowerShell.exe -ExecutionPolicy Bypass -NoExit -File "C:\Program Files\UtilityScripts\Shrink-ClippedImage.ps1
+Capslock::
+    if FileExist("C:\UtilityScripts\Shrink-ClippedImage.ps1")
+        Run PowerShell.exe -ExecutionPolicy Bypass -nologo -File C:\UtilityScripts\Shrink-ClippedImage.ps1
+Return
 
 
 ; Shift+CapsLock to move up a directory level in Explorer.
 #IfWinActive, ahk_class CabinetWClass
-+Capslock::Send !{Up} 
++Capslock::Send !{Up}
 #IfWinActive
 return
 
@@ -81,7 +84,8 @@ return
 
 ; Launch "everything" search when Ctrl+Win+a is pressed.
 ^#a::
-    Run "C:\Program Files\Everything\Everything.exe"
+    if FileExist("C:\Program Files\Everything\Everything64.exe")
+        Run "C:\Program Files\Everything\Everything64.exe"
 Return
 
 
@@ -117,7 +121,7 @@ Return
 
 
 ; Past text–only from Clipboard when Ctrl+Win+v is pressed.
-^#v::                            
+^#v::
     Clip0 = %ClipBoardAll%
     ClipBoard = %ClipBoard%       ; Convert to text
     Send ^v                       ; For best compatibility: SendPlay
@@ -126,5 +130,11 @@ Return
     VarSetCapacity(Clip0, 0)      ; Free memory
 Return
 
+
+; Ctrl+Shift+v triggers PowerShell script that saves image in clipboard to file and copies Markdown formatted link.
+^+v::
+    if FileExist("C:\UtilityScripts\Save-ClipboardImageMD.ps1")
+        Run PowerShell.exe -ExecutionPolicy Bypass -nologo -File C:\UtilityScripts\Save-ClipboardImageMD.ps1 -ImageFolderPath "C:\Users\USERNAME\Documents\images" -RelativeImageFolderPath ".\images"
+Return
 
 ; End
